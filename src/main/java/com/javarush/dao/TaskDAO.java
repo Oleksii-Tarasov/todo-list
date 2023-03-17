@@ -44,7 +44,7 @@ public class TaskDAO {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void edit(Task task) {
+    public void saveOrUpdate(Task task) {
         getSession().persist(task);
     }
 

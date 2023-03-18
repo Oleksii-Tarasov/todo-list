@@ -18,24 +18,34 @@ public class TaskService {
         this.taskDAO = taskDAO;
     }
 
+    public List<Task> getAll(int offset, int limit) {
+        return taskDAO.getAll(offset, limit);
+    }
+
     public int getAllCount(){
         return taskDAO.getAllCount();
     }
 
     @Transactional
-    public List<Task> getAll(int offset, int limit) {
-        return taskDAO.getAll(offset, limit);
-    }
+    public Task edit(int id, String description, Status status) {
+        Task task = taskDAO.getById(id);
 
-    @Transactional
-    public Task getTaskById(int id) {
-        return taskDAO.getById(id);
+        if (isNull(task)) {
+            throw new RuntimeException("Task with id=" + id + " not found");
+        }
+
+        task.setDescription(description);
+        task.setStatus(status);
+
+        taskDAO.saveOrUpdate(task);
+
+        return task;
     }
 
     public Task create(String description, Status status) {
         Task task = new Task();
         task.setDescription(description);
-        task.setTaskStatus(status);
+        task.setStatus(status);
 
         taskDAO.saveOrUpdate(task);
 
@@ -51,21 +61,5 @@ public class TaskService {
         }
 
         taskDAO.delete(task);
-    }
-
-    @Transactional
-    public Task edit(int id, String description, Status status) {
-        Task task = taskDAO.getById(id);
-
-        if (isNull(task)) {
-            throw new RuntimeException("Task with id=" + id + " not found");
-        }
-
-        task.setDescription(description);
-        task.setTaskStatus(status);
-
-        taskDAO.saveOrUpdate(task);
-
-        return task;
     }
 }

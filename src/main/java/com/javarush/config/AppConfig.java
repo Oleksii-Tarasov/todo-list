@@ -26,6 +26,15 @@ public class AppConfig {
         return sessionFactory;
     }
 
+    public Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
+        properties.put(Environment.DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
+        properties.put(Environment.HBM2DDL_AUTO, "validate");
+
+        return properties;
+    }
+
     @Bean
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
@@ -36,15 +45,6 @@ public class AppConfig {
         dataSource.setMaximumPoolSize(10);
 
         return dataSource;
-    }
-
-    public Properties hibernateProperties() {
-        Properties properties = new Properties();
-        properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
-        properties.put(Environment.DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
-        properties.put(Environment.HBM2DDL_AUTO, "validate");
-
-        return properties;
     }
 
     @Bean

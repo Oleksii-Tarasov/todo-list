@@ -1,28 +1,12 @@
-package com.javarush.domain;
+package com.javarush.controller;
 
-import jakarta.persistence.*;
+import com.javarush.domain.Status;
 
-@Entity
-@Table(schema = "todo", name = "task")
 //@Getter
 //@Setter
-public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+public class TaskDTO {
     private String description;
-
-    @Enumerated(EnumType.ORDINAL)
     private Status status;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;

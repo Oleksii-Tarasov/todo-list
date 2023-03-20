@@ -26,6 +26,7 @@ public class AppConfig {
         return sessionFactory;
     }
 
+
     public Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");

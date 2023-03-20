@@ -9,4 +9,5 @@ import lombok.Setter;
 public class TaskDTO {
     private String description;
     private Status status;
+
 }

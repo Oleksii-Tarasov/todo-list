@@ -22,6 +22,7 @@ public class TaskService {
         return taskDAO.getAll(offset, limit);
     }
 
+
     public int getAllCount(){
         return taskDAO.getAllCount();
     }

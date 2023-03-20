@@ -3,28 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>tasks</title>
+    <link href="/css/button.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
 </head>
 <body>
-<table class="table table-dark">
-    <thead>
+<table class="table">
+    <thead class="thead-dark">
     <tr>
         <th scope="col">ID</th>
         <th scope="col">DESCRIPTION</th>
         <th scope="col">STATUS</th>
+        <th scope="col"/>
+        <th scope="col"/>
     </tr>
     </thead>
     <tbody>
     <tr th:each="task,number : ${tasks}">
-        <td th:text="${task.id}"></td>
-        <td th:text="${task.description}" th:id="'description_' + ${task.id}"></td>
-        <td th:text="${task.status}" th:id="'status_' + ${task.id}"></td>
+        <td th:text="${task.id}"/>
+        <td th:text="${task.description}" th:id="'description_' + ${task.id}"/>
+        <td th:text="${task.status}" th:id="'status_' + ${task.id}"/>
+        <td>
+            <button th:id="'edit_' + ${task.id}" th:onclick="'edit_task(' + ${task.id} + ')'">Edit</button>
+        </td>
+        <td>
+            <button th:id="'delete_' + ${task.id}" th:onclick="'delete_task(' + ${task.id} + ')'">Delete</button>
+        </td>
     </tr>
     </tbody>
 </table>
+<h2>
+    <button th:each="pageNumber : ${page_numbers}" type="button" class="btn btn-outline-dark">
+        <a th:href="@{/(page=${pageNumber}, limit=10)}" th:text="${pageNumber}"
+           th:classappend="${pageNumber == current_page? 'active_page' : ''}"></a>
+    </button>
+</h2>
 
+<script src="/script/jquery-3.6.4.min.js"></script>
+<script src="/script/my.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

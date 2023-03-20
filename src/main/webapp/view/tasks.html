@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>tasks</title>
-    <link href="/css/button.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
           crossorigin="anonymous">
@@ -31,10 +31,30 @@
             <button th:id="'delete_' + ${task.id}" th:onclick="'delete_task(' + ${task.id} + ')'">Delete</button>
         </td>
     </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td>New Task:</td>
+        <td>
+            <input id='description_new' type='text' value=''>
+        </td>
+        <td>
+            <label for='status_new'></label>
+            <select id='status_new'>
+                <option value='IN_PROGRESS'>IN PROGRESS</option>
+                <option value='DONE'>DONE</option>
+                <option value='PAUSED'>PAUSED</option>
+            </select>
+        </td>
+        <td>
+            <button id='save_new' onclick='add_task()'>Add</button>
+        </td>
+    </tr>
     </tbody>
 </table>
 <h2>
-    <button th:each="pageNumber : ${page_numbers}" type="button" class="btn btn-outline-dark">
+    <button th:each="pageNumber : ${page_numbers}" type="button" class="btn btn-outline-secondary">
         <a th:href="@{/(page=${pageNumber}, limit=10)}" th:text="${pageNumber}"
            th:classappend="${pageNumber == current_page? 'active_page' : ''}"></a>
     </button>
@@ -42,10 +62,10 @@
 
 
 <script src="/script/jquery-3.6.4.min.js"></script>
-<script src="/script/my.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+<script src="/script/crud.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+<!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+<!--        crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>

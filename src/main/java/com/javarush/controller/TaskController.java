@@ -37,7 +37,6 @@ public class TaskController {
             model.addAttribute("page_numbers", pageNumbers);
         }
 
-
         return "tasks";
     }
 

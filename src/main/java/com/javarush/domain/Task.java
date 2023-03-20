@@ -15,7 +15,6 @@ public class Task {
 
     private String description;
 
-
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 }

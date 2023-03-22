@@ -3,8 +3,10 @@ package com.javarush.config;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.cfg.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -15,7 +17,17 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class AppConfig {
+    @Value("${datasource.url}")
+    private String DATA_SOURCE_URL;
+
+    @Value("${datasource.user}")
+    private String DATA_SOURCE_USER;
+
+    @Value("${datasource.password}")
+    private String DATA_SOURCE_PASSWORD;
+
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -25,7 +37,6 @@ public class AppConfig {
 
         return sessionFactory;
     }
-
 
     public Properties hibernateProperties() {
         Properties properties = new Properties();
@@ -40,10 +51,9 @@ public class AppConfig {
     public DataSource dataSource() {
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setDriverClassName("com.p6spy.engine.spy.P6SpyDriver");
-//        dataSource.setJdbcUrl("jdbc:p6spy:mysql://localhost:3306/todo");
-        dataSource.setJdbcUrl("jdbc:p6spy:mysql://db:3306/todo");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setJdbcUrl(DATA_SOURCE_URL);
+        dataSource.setUsername(DATA_SOURCE_USER);
+        dataSource.setPassword(DATA_SOURCE_PASSWORD);
         dataSource.setMaximumPoolSize(10);
 
         return dataSource;

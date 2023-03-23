@@ -35,7 +35,6 @@ public class TaskDAO {
         return Math.toIntExact(query.uniqueResult());
     }
 
-
     @Transactional(propagation = Propagation.REQUIRED)
     public Task getById(int id) {
         Query<Task> query = getSession().createQuery("SELECT t FROM Task t WHERE t.id = :ID", Task.class);

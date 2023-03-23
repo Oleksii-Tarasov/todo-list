@@ -28,7 +28,6 @@ public class TaskDAO {
         return query.getResultList();
     }
 
-
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public int getAllCount() {
         Query<Long> query = getSession().createQuery("SELECT COUNT(t) FROM Task t", Long.class);

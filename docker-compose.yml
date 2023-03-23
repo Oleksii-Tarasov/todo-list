@@ -13,13 +13,13 @@ services:
     image: mysql:8.0.32
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
     ports:
       - '3306:3306'
     volumes:
       - my-db:/var/lib/mysql
+      - ./dist/todo_list_db.sql:/docker-entrypoint-initdb.d/todo_list_db.sql
     healthcheck:
-      test: "/usr/bin/mysql --user=${MYSQL_ROOT_PASSWORD} --password=${MYSQL_ROOT_PASSWORD} --execute \"SHOW DATABASES;\""
+      test: "/usr/bin/mysql --user=${MYSQL_USER} --password=${MYSQL_USER_PASSWORD} --execute \"SHOW DATABASES;\""
       interval: 2s
       timeout: 120s
       retries: 10

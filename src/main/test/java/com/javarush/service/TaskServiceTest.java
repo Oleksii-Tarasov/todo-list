@@ -3,6 +3,7 @@ package com.javarush.service;
 import com.javarush.dao.TaskDAO;
 import com.javarush.domain.Status;
 import com.javarush.domain.Task;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,14 +22,35 @@ class TaskServiceTest {
     @Mock
     private TaskDAO taskDAO;
 
+    private static Task expectedTask;
+    private static int id;
+    private static String description;
+    private static Status status;
+
+    @BeforeAll
+    static void setUpTask() {
+        id = 1;
+        description = "description";
+        status = Status.IN_PROGRESS;
+
+        expectedTask = new Task();
+
+        expectedTask.setId(id);
+        expectedTask.setDescription(description);
+        expectedTask.setStatus(status);
+    }
+
     @Test
     void should_return_all_tasks() {
-        when(taskDAO.getAll(1, 10)).thenReturn(Arrays.asList(new Task(), new Task(), new Task()));
+        int offset = 1;
+        int limit = 10;
 
-        var actualList = taskService.getAll(1, 10);
+        when(taskDAO.getAll(offset, limit)).thenReturn(Arrays.asList(new Task(), new Task(), new Task()));
+
+        var actualList = taskService.getAll(offset, limit);
         assertNotNull(actualList);
 
-        verify(taskDAO, times(1)).getAll(1, 10);
+        verify(taskDAO, times(1)).getAll(offset, limit);
     }
 
     @Test
@@ -42,15 +64,6 @@ class TaskServiceTest {
 
     @Test
     void should_save_and_return_edited_task() {
-        int id = 1;
-        String description = "description";
-        Status status = Status.IN_PROGRESS;
-
-        Task expectedTask = new Task();
-        expectedTask.setId(id);
-        expectedTask.setDescription(description);
-        expectedTask.setStatus(status);
-
         when(taskDAO.getById(id)).thenReturn(expectedTask);
 
         var actualTask = taskService.edit(id, description, status);
@@ -64,9 +77,6 @@ class TaskServiceTest {
 
     @Test
     void should_create_newTask() {
-        String description = "description";
-        Status status = Status.IN_PROGRESS;
-
         Task task = taskService.create(description, status);
 
         verify(taskDAO).saveOrUpdate(task);
@@ -77,37 +87,21 @@ class TaskServiceTest {
 
     @Test
     void should_delete_task_by_id() {
-        int id = 1;
-        String description = "description";
-        Status status = Status.IN_PROGRESS;
-
-        Task expectedTask = new Task();
-
-        expectedTask.setId(1);
-        expectedTask.setDescription(description);
-        expectedTask.setStatus(status);
-
         when(taskDAO.getById(id)).thenReturn(expectedTask);
 
         taskService.delete(id);
 
-        verify(taskDAO).delete(expectedTask);
+        verify(taskDAO, times(1)).delete(expectedTask);
     }
 
     @Test
-    public void when_task_not_found_by_id() {
-        int id = 1;
+    void should_throw_runtime_exception_when_task_not_found_by_id() {
+        int nonExistentId = 123;
 
-        when(taskDAO.getById(id)).thenReturn(null);
+        when(taskDAO.getById(nonExistentId)).thenReturn(null);
 
-        try {
-            taskService.delete(id);
-        } catch (RuntimeException e) {
-            assertEquals("Task with id=" + id + " not found", e.getMessage());
-            verify(taskDAO, times(1)).getById(id);
-            verifyNoMoreInteractions(taskDAO);
-            return;
-        }
-        fail("Expected RuntimeException was not thrown");
+        assertThrows(RuntimeException.class, () -> taskService.delete(nonExistentId));
+
+        verify(taskDAO, never()).delete(any());
     }
 }
